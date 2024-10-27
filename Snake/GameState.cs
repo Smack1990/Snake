@@ -12,7 +12,7 @@ public class GameState
     public int Cols { get; }
     public GridValue[,] Grid { get; }
     public Direction Dir { get; private set; }
-    public int Score { get; private set; }
+    public int Score { get; internal set; }
     public bool GameOver { get; private set; }
 
     private readonly LinkedList<Direction> dirChanges = new LinkedList<Direction>();

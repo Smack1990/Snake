@@ -58,7 +58,7 @@
                 <TextBlock x:Name="ScoreText"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Bottom"
-                           Text="SCORE 0"
+                           Text=""
                            FontSize="22"
                            Margin="10"/>
 
@@ -96,29 +96,56 @@
             </Grid>
         </Viewbox>
 
-        <!-- Centered Name Panel on top of Overlay -->
+
+
         <StackPanel x:Name="NamePanel"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="Hidden"
                     Background="{StaticResource OverlayColor}"
                     Margin="0,0,0,0"
+                    
                     Grid.RowSpan="2"
                     Grid.ColumnSpan="2">
             <TextBlock Text="Enter Your Name"
                        HorizontalAlignment="Center"
                        Margin="10"
-                       FontSize="20"/>
+                       FontSize="22"
+                       Padding="5"
+                       FontWeight="DemiBold"
+                       TextOptions.TextFormattingMode="Display"
+                       TextOptions.TextRenderingMode="Aliased"/>
+
+            <Border BorderBrush="#000000"
+                    Width="200"
+                     BorderThickness="2"
+                     CornerRadius="0.5"
+                     Margin="0"
+                     Padding="0">
+            
             <TextBox x:Name="NameInput"
+                     Background="GhostWhite"
                      Width="200"
                      HorizontalAlignment="Center"
-                     Margin="30"
-                     FontSize="16"/>
+                     TextOptions.TextRenderingMode="Aliased"
+                     
+                     Margin="0"
+                     FontSize="16"
+                     Padding="1"
+                     TextOptions.TextFormattingMode="Display"
+                     RenderOptions.ClearTypeHint="Enabled"/>
+        </Border>  
+
+                    
+                    
             <Button Content="Start Game"
                     Click="StartGame_Click"
                     HorizontalAlignment="Center"
-                    Margin="10"
+                    Margin="5"
+                    Padding="5"
+                    
                     FontSize="16"/>
+            
         </StackPanel>
     </Grid>
 </Window>

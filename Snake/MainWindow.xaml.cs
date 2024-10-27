@@ -138,7 +138,7 @@ public partial class MainWindow : Window
 
     private async Task GameLoop()
     {
-        int delay = 120;
+        int delay = 100;
         while (!gameState.GameOver)
         {
             await Task.Delay(delay);
@@ -151,7 +151,7 @@ public partial class MainWindow : Window
                 currentPlayer.Score = gameState.Score;
 
                 // Adjust delay to increase speed gradually
-                delay = Math.Max(20, delay - 3);
+                delay = Math.Max(20, delay - 1);
 
                 
                 currentPlayer.AddOrUpdateScore(currentPlayer.Name, currentPlayer.Score);
@@ -195,7 +195,7 @@ public partial class MainWindow : Window
     {
         DrawGrid();
         DrawSnakeHead();
-        ScoreText.Text = $"SCORE: {gameState.Score}";
+        ScoreText.Text = $" {currentPlayer.Name} | Score: {gameState.Score}";
     }
 
     private void DrawGrid()
@@ -246,7 +246,7 @@ public partial class MainWindow : Window
         await DrawDeadSnake();
         await Task.Delay(1000);
         Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "PRESS ANY KEY TO START A NEW GAME";
+        OverlayText.Text = "Press a key for\n  a new game!";
     }
 
 
