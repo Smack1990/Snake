@@ -43,33 +43,31 @@ public partial class MainWindow : Window
 
     private void StartGame_Click(object sender, RoutedEventArgs e)
     {
-        // Retrieve the player name from the TextBox
+        
         string playerName = NameInput.Text.Trim();
         DisplayHighscores();
 
 
         if (string.IsNullOrEmpty(playerName))
         {
-            // Show a message if the name is empty and prevent starting the game
+            
             MessageBox.Show("Please enter your name to start the game.");
             return;
         }
 
-        // Initialize currentPlayer with the entered name and a starting score of 0
+        
         currentPlayer = new Player(playerName, 0);
 
-        // Read high scores from JSON after currentPlayer is initialized
+        
         
 
-        // Hide the name entry panel and show the overlay with start prompt
         NamePanel.Visibility = Visibility.Hidden;
         Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Press any key to start"; // Update overlay text
+        OverlayText.Text = "Press any key to start"; 
 
-        // Set focus back to the Window to capture key events
         this.Focus();
 
-        gameRunning = false; // Allow game to start on key press
+        gameRunning = false; 
     }
 
     private async Task RunGame()
@@ -82,7 +80,7 @@ public partial class MainWindow : Window
         await ShowGameOver();
 
         // Save the current player's score to the high scores list
-        if (currentPlayer != null) // Double-check that currentPlayer is not null
+        if (currentPlayer != null) 
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
         }
@@ -102,7 +100,7 @@ public partial class MainWindow : Window
                                          .Select(entry => $"{entry.Key}: {entry.Value}")
                                          .ToList();
 
-            HighscoreList.ItemsSource = topScores; // Now this will work within MainWindow
+            HighscoreList.ItemsSource = topScores; 
         }
     }
 
@@ -110,7 +108,7 @@ public partial class MainWindow : Window
     {
         if (NamePanel.Visibility == Visibility.Visible)
         {
-            if (NameInput.IsFocused) return;  // Allow key input to the TextBox
+            if (NameInput.IsFocused) return;  
 
             e.Handled = true;
             return;
@@ -155,7 +153,7 @@ public partial class MainWindow : Window
                 // Adjust delay to increase speed gradually
                 delay = Math.Max(20, delay - 3);
 
-                // Update high score list
+                
                 currentPlayer.AddOrUpdateScore(currentPlayer.Name, currentPlayer.Score);
                 DisplayHighscores();
             }
