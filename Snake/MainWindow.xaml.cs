@@ -79,7 +79,6 @@ public partial class MainWindow : Window
         await GameLoop();
         await ShowGameOver();
 
-        // Save the current player's score to the high scores list
         if (currentPlayer != null) 
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
@@ -96,7 +95,7 @@ public partial class MainWindow : Window
         if (currentPlayer != null)
         {
             var topScores = currentPlayer.GetTopScores()
-                                         .Take(5) // Limit to top 5 entries
+                                         .Take(5) 
                                          .Select(entry => $"{entry.Key}: {entry.Value}")
                                          .ToList();
 
@@ -147,10 +146,8 @@ public partial class MainWindow : Window
 
             if (gameState.Score > currentPlayer.Score)
             {
-                // Update current player's score
                 currentPlayer.Score = gameState.Score;
 
-                // Adjust delay to increase speed gradually
                 delay = Math.Max(20, delay - 1);
 
                 
