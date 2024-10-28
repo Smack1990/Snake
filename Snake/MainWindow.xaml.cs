@@ -30,7 +30,6 @@ public partial class MainWindow : Window
     public Player currentPlayer;
     private bool gameRunning;
     private bool isPaused = false;
-    //private CancellationTokenSource gameLoopTokenSource;
     public MainWindow()
     {
         InitializeComponent();
@@ -107,24 +106,13 @@ public partial class MainWindow : Window
         Draw();
         await ShowCountDown();
         Overlay.Visibility = Visibility.Hidden;
-
-        // Initialize new token source for game control (pause/resume)
-        //gameLoopTokenSource = new CancellationTokenSource();
-
-        // Start the GameLoop with initial delay and token for pausing
         await GameLoop(100);
-
-        // Update the high score after the game ends
         if (currentPlayer != null)
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
         }
-
-        // Reset game state for the next run
         gameState = new GameState(rows, cols);
-
-        // Optionally show a restart prompt or call ShowGameOver if needed
-        await RestartGame(); // or ShowGameOver();
+        await RestartGame();
     }
 
 
