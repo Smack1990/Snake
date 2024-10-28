@@ -30,6 +30,7 @@ public partial class MainWindow : Window
     public Player currentPlayer;
     private bool gameRunning;
     private bool isPaused = false;
+    //private CancellationTokenSource gameLoopTokenSource;
     public MainWindow()
     {
         InitializeComponent();
@@ -106,15 +107,24 @@ public partial class MainWindow : Window
         Draw();
         await ShowCountDown();
         Overlay.Visibility = Visibility.Hidden;
-        await GameLoop();
-        //await ShowGameOver();
-        await RestartGame();
+
+        // Initialize new token source for game control (pause/resume)
+        //gameLoopTokenSource = new CancellationTokenSource();
+
+        // Start the GameLoop with initial delay and token for pausing
+        await GameLoop(100);
+
+        // Update the high score after the game ends
         if (currentPlayer != null)
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
         }
 
+        // Reset game state for the next run
         gameState = new GameState(rows, cols);
+
+        // Optionally show a restart prompt or call ShowGameOver if needed
+        await RestartGame(); // or ShowGameOver();
     }
 
 
@@ -180,32 +190,41 @@ public partial class MainWindow : Window
 
             isPaused = true;
             Overlay.Visibility = Visibility.Visible;
-            OverlayText.Text = "Game Paused\n Press any key to continue";
+            OverlayText.Text = "      Game Paused\n\nPress SPACE to continue";
+           
         }
     }
 
 
-    private async Task GameLoop()
+    private async Task GameLoop(int delay)
     {
-        int delay = 100;
-        while (!gameState.GameOver)
-        {
-            await Task.Delay(delay);
-            gameState.Move();
-            Draw();
-
-            if (gameState.Score > currentPlayer.Score)
+        
+        
+            while (!gameState.GameOver)
             {
-                currentPlayer.Score = gameState.Score;
-
-                delay = Math.Max(20, delay - 1);
-
-
-                currentPlayer.AddOrUpdateScore(currentPlayer.Name, currentPlayer.Score);
-                DisplayHighscores();
+                if(isPaused)
+            {
+                await Task.Delay(100);
+                continue;
             }
-        }
+            await Task.Delay(delay);
+                gameState.Move();
+                Draw();
+
+                if (gameState.Score > currentPlayer.Score)
+                {
+                    currentPlayer.Score = gameState.Score;
+
+                    delay = Math.Max(20, delay - 1);
+
+
+                    currentPlayer.AddOrUpdateScore(currentPlayer.Name, currentPlayer.Score);
+                    DisplayHighscores();
+                }
+            }
+       
     }
+        
 
     private readonly Dictionary<Direction, int> dirToRotation = new()
     {
