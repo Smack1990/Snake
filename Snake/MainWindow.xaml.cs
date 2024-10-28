@@ -173,6 +173,7 @@ public partial class MainWindow : Window
             isPaused = false;
             Overlay.Visibility = Visibility.Collapsed;
             OverlayText.Text = "";
+
         }
         else
         {
