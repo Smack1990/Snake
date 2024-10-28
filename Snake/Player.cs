@@ -17,7 +17,7 @@ namespace Snake
         private string _filepath = "highscores.json";
         public string Name { get; set; }
         public int Score { get; set; }
-        public Dictionary<string, int> Highscores { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Highscores { get; private set; } = new Dictionary<string, int>();
 
         public Player(string name, int score)
         {

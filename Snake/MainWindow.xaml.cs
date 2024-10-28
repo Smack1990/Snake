@@ -35,7 +35,7 @@ public partial class MainWindow : Window
         gridImages = SetupGrid();
         gameState = new GameState(rows, cols);
         currentPlayer = new Player("Guest", 0);
-        
+
         DisplayHighscores();
         NamePanel.Visibility = Visibility.Visible;
         NameInput.Focus();
@@ -43,31 +43,60 @@ public partial class MainWindow : Window
 
     private void StartGame_Click(object sender, RoutedEventArgs e)
     {
-        
+
         string playerName = NameInput.Text.Trim();
-        DisplayHighscores();
+        
 
 
         if (string.IsNullOrEmpty(playerName))
         {
-            
+
             MessageBox.Show("Please enter your name to start the game.");
             return;
         }
+        if (Player.Highscores.ContainsKey(playerName))
+        {
+            var result = MessageBox.Show($"Name {playerName} already exists: Are you {playerName}?",
+                "Confirm Name",
+                MessageBoxButton.YesNo);
+            if (result == MessageBoxResult.Yes)
+            {
+                currentPlayer = new Player(playerName, Player.Highscores[playerName]);
+                BeginGame();
+                return;
 
-        
-        currentPlayer = new Player(playerName, 0);
+            }
+            else
+            {
+                NameInput.Clear();
+                return;
+            }
+        }
+        else
+        {
+            currentPlayer = new Player(playerName, 0);
+            BeginGame();
+        }
 
-        
-        
 
+
+
+
+
+ 
+
+    }
+
+    private void BeginGame()
+    {
+        DisplayHighscores();
         NamePanel.Visibility = Visibility.Hidden;
         Overlay.Visibility = Visibility.Visible;
-        OverlayText.Text = "Press any key to start"; 
+        OverlayText.Text = "Press any key to start";
 
         this.Focus();
 
-        gameRunning = false; 
+        gameRunning = false;
     }
 
     private async Task RunGame()
@@ -79,7 +108,7 @@ public partial class MainWindow : Window
         await GameLoop();
         await ShowGameOver();
 
-        if (currentPlayer != null) 
+        if (currentPlayer != null)
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
         }
@@ -95,11 +124,11 @@ public partial class MainWindow : Window
         if (currentPlayer != null)
         {
             var topScores = currentPlayer.GetTopScores()
-                                         .Take(5) 
+                                         .Take(5)
                                          .Select(entry => $"{entry.Key}: {entry.Value}")
                                          .ToList();
 
-            HighscoreList.ItemsSource = topScores; 
+            HighscoreList.ItemsSource = topScores;
         }
     }
 
@@ -107,7 +136,7 @@ public partial class MainWindow : Window
     {
         if (NamePanel.Visibility == Visibility.Visible)
         {
-            if (NameInput.IsFocused) return;  
+            if (NameInput.IsFocused) return;
 
             e.Handled = true;
             return;
@@ -150,7 +179,7 @@ public partial class MainWindow : Window
 
                 delay = Math.Max(20, delay - 1);
 
-                
+
                 currentPlayer.AddOrUpdateScore(currentPlayer.Name, currentPlayer.Score);
                 DisplayHighscores();
             }
@@ -168,7 +197,7 @@ public partial class MainWindow : Window
     private Image[,] SetupGrid()
     {
         Image[,] images = new Image[rows, cols];
-        GameGrid.Rows =rows;
+        GameGrid.Rows = rows;
         GameGrid.Columns = cols;
         GameGrid.Width = GameGrid.Height * (cols / (double)rows);
 
@@ -201,7 +230,7 @@ public partial class MainWindow : Window
         {
             for (int c = 0; c < cols; c++)
             {
-               GridValue gridVal = gameState.Grid[r, c];
+                GridValue gridVal = gameState.Grid[r, c];
                 gridImages[r, c].Source = gridValToImage[gridVal];
                 gridImages[r, c].RenderTransform = Transform.Identity;
             }
@@ -247,5 +276,5 @@ public partial class MainWindow : Window
     }
 
 
-  
+
 }
