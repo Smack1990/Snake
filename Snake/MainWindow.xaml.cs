@@ -29,6 +29,7 @@ public partial class MainWindow : Window
     private GameState gameState;
     public Player currentPlayer;
     private bool gameRunning;
+    private bool isPaused = false;
     public MainWindow()
     {
         InitializeComponent();
@@ -106,8 +107,8 @@ public partial class MainWindow : Window
         await ShowCountDown();
         Overlay.Visibility = Visibility.Hidden;
         await GameLoop();
-        await ShowGameOver();
-
+        //await ShowGameOver();
+        await RestartGame();
         if (currentPlayer != null)
         {
             currentPlayer.AddOrUpdateScore(currentPlayer.Name, gameState.Score);
@@ -161,8 +162,27 @@ public partial class MainWindow : Window
             case Key.Right: gameState.ChangeDirection(Direction.Right); break;
             case Key.Up: gameState.ChangeDirection(Direction.Up); break;
             case Key.Down: gameState.ChangeDirection(Direction.Down); break;
+            case Key.Escape: Application.Current.Shutdown(); break;
+            case Key.Space: TogglePauseGame(); break;
         }
     }
+    private void TogglePauseGame()
+    {
+        if (isPaused)
+        {
+            isPaused = false;
+            Overlay.Visibility = Visibility.Collapsed;
+            OverlayText.Text = "";
+        }
+        else
+        {
+
+            isPaused = true;
+            Overlay.Visibility = Visibility.Visible;
+            OverlayText.Text = "Game Paused\n Press any key to continue";
+        }
+    }
+
 
     private async Task GameLoop()
     {
@@ -275,6 +295,28 @@ public partial class MainWindow : Window
         OverlayText.Text = "Press a key for\n  a new game!";
     }
 
+    private async Task RestartGame()
+    {
+        await DrawDeadSnake();
+        await Task.Delay(1000);
+        Overlay.Visibility = Visibility.Visible;
 
+        var result = MessageBox.Show($"Do you want to play again?",
+    "Play again?",
+    MessageBoxButton.YesNo);
+        if (result == MessageBoxResult.Yes)
+        {
+            
+            BeginGame();
+            return;
+
+        }
+        {
+            NameInput.Clear();
+            NamePanel.Visibility = Visibility.Visible; 
+            NameInput.Visibility = Visibility.Visible;
+            NameInput.Focus();  
+        }
+    }
 
 }

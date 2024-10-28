@@ -16,19 +16,19 @@
         KeyDown="Window_KeyDown">
 
     <Grid>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
-           
+
             <ColumnDefinition Width="*"/>
-            
+
         </Grid.ColumnDefinitions>
 
-       
+
         <Grid Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
               Margin="10" VerticalAlignment="Top" HorizontalAlignment="Left">
             <Border BorderBrush="{StaticResource GridLinesColor}" BorderThickness="1"
@@ -45,8 +45,27 @@
                 </StackPanel>
             </Border>
         </Grid>
+        <Grid Grid.Row="1" Grid.Column="1"
+              Margin="0,10,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="45" Width="144">
+            <Border BorderBrush="{StaticResource GridLinesColor}" BorderThickness="1"
+                    Background="{StaticResource OverlayColor}" Padding="5">
+                <StackPanel Margin="0,0,0,0">
+                   <TextBlock Text="ESC To Exit" FontSize="18" FontWeight="Bold" Margin="5"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1"
+              Margin="0,50,10,0" VerticalAlignment="Top" HorizontalAlignment="Right" Height="70" Width="144">
+            <Border BorderBrush="{StaticResource GridLinesColor}" BorderThickness="1"
+                    Background="{StaticResource OverlayColor}" Padding="5">
+                <StackPanel Margin="0,0,0,0">
+                    <TextBlock  Text="SPACE To" FontSize="18" FontWeight="Bold" Margin="5" HorizontalAlignment="Center"/>
+                    <TextBlock  Text="Pause Game" FontSize="18" FontWeight="Bold" Margin="5" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
 
-     
+
         <Viewbox Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="117,-3,83,3">
             <Grid>
                 <Grid.RowDefinitions>
@@ -84,7 +103,8 @@
                         Width="{Binding Path=ActualWidth, ElementName=GridBorder}"
                         Height="{Binding Path=ActualHeight, ElementName=GridBorder}"
                         Margin="{Binding Path=Margin, ElementName=GridBorder}"
-                        RenderOptions.EdgeMode="Aliased">
+                        RenderOptions.EdgeMode="Aliased"
+                        Visibility="Collapsed">
                     <TextBlock x:Name="OverlayText"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
@@ -121,8 +141,8 @@
                      CornerRadius="0.5"
                      Margin="0"
                      Padding="0">
-            
-            <TextBox x:Name="NameInput"
+
+                <TextBox x:Name="NameInput"
                      Background="GhostWhite"
                      Width="200"
                      HorizontalAlignment="Center"
@@ -133,10 +153,10 @@
                      Padding="1"
                      TextOptions.TextFormattingMode="Display"
                      RenderOptions.ClearTypeHint="Enabled"/>
-        </Border>  
+            </Border>
 
-                    
-                    
+
+
             <Button Content="Start Game"
                     Click="StartGame_Click"
                     HorizontalAlignment="Center"
@@ -144,7 +164,7 @@
                     Padding="5"
                     
                     FontSize="16"/>
-            
+
         </StackPanel>
     </Grid>
 </Window>
